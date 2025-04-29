@@ -1,0 +1,71 @@
+import { ArrowRight, Star } from "lucide-react";
+import React from "react";
+import { Button } from "../ui/button";
+type ResultProps = {
+  isLoading: boolean;
+  searchResults: never[];
+  searchValue: string;
+};
+export const SearchResult = ({
+  isLoading,
+  searchResults,
+  searchValue,
+}: ResultProps) => {
+  return (
+    <div className="flex items-center justify-center">
+      {isLoading && (
+        <div className="flex absolute top-20 z-50 md:w-[577px] md:h-[128px] items-center justify-center h-[128px] w-[335px] bg-white dark:bg-gray-400 rounded-[8px] border">
+          <div className="w-12 h-12 border-4 border-gray-300 border-t-gray-500 rounded-full animate-spin"></div>
+        </div>
+      )}
+
+      {searchResults.length > 0 && !isLoading && (
+        <div className="w-[335px] md:w-[577px]  bg-white dark:bg-[#27272A] border border-[#E4E4E7] rounded-[8px] shadow-md overflow-y-auto z-50 absolute top-20 p-3">
+          {searchResults.slice(0, 5).map((movie: any) => (
+            <div
+              key={movie.id}
+              className=" p-3 border-b flex border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer justify-between"
+            >
+              <div className="flex gap-4 justify-between w-full">
+                <img
+                  src={`http://image.tmdb.org/t/p/original/${movie.poster_path}`}
+                  alt=""
+                  className="h-25 w-[67px] rounded-[8px]"
+                />
+                <div className="flex flex-col gap-3 w-full">
+                  <div className="flex flex-col">
+                    <h3 className="text-[20px] font-medium text-gray-900 dark:text-white">
+                      {movie.title}
+                    </h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 flex gap-2">
+                      <Star className="size-4 text-amber-300 dark:text-gray-400 fill-amber-300  dark:fill-gray-400" />
+                      {movie.vote_average.toFixed(1)} /10
+                    </p>
+                  </div>
+                  <div className="flex justify-between">
+                    <p className="text-[14px]">
+                      {movie.release_date.slice(0, 4)}
+                    </p>
+                    <Button className="h-[36px] bg-transparent border-none shadow-transparent text-black">
+                      See more <ArrowRight />
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+          <hr className="border-t border-gray-300 my-4" />
+          <p className="flex px-[16px] py-[8px]">
+            Search all result for "{searchValue.toLocaleLowerCase()}"
+          </p>
+        </div>
+      )}
+
+      {searchValue.trim() && searchResults.length === 0 && !isLoading && (
+        <div className="flex  md:w-[577px] items-center md:h-[128px] w-[335px] h-[128px] justify-center bg-white dark:bg-[#27272A] border border-[#E4E4E7] rounded-[8px] shadow-md p-3 text-center text-gray-500 dark:text-gray-400 absolute top-20 z-50 ">
+          No results found.
+        </div>
+      )}
+    </div>
+  );
+};
