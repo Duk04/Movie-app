@@ -1,5 +1,5 @@
-import { useState, Dispatch, SetStateAction } from "react";
-import { useFetchDataClient } from "@/hooks/useFetchDataClient";
+import { Dispatch, SetStateAction } from "react";
+
 import { X } from "lucide-react";
 
 type TrailerProps = {

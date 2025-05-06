@@ -1,14 +1,13 @@
-import React, { Dispatch, SetStateAction } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ChevronDown, Moon, MoonIcon, Search, Sun } from "lucide-react";
+import { Moon, Search, Sun } from "lucide-react";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { XToggler } from "./XToggler";
 import { DropDown } from "./DropDown";
 import { searchBar } from "@/constants/serachBaranimation";
 import { serachBaranimation } from "@/constants/serachBaranimation";
-import { SearchResult } from "./SearchResult";
+
 type ThemeTogglorProps = {
   showSearch: boolean;
   setShowSearch: (value: boolean) => void;

@@ -1,8 +1,7 @@
 "use client";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Star } from "lucide-react";
 import { DynamicPagination } from "@/components/DynamicPagination";
-import { useSearchGenreParams } from "@/hooks/useSearchGenreParams";
 
 interface Movie {
   id: number;

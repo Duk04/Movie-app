@@ -28,7 +28,6 @@ export const HeaderContainer = () => {
     setSearchResults([]);
     setIsLoading(false);
     setSearchValue("");
-    // router.push(`/`);
   };
 
   const handelMainPage = () => {

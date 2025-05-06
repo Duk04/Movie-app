@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronRight, Star, X } from "lucide-react";
+import { ChevronRight, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSearchGenreParams } from "@/hooks/useSearchGenreParams";
 import { cn } from "@/lib/utils";

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, The_Girl_Next_Door } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { HeaderContainer } from "@/components/header/HeaderContainer";
 import { ThemeProvider } from "next-themes";

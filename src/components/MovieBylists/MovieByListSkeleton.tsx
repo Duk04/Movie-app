@@ -1,5 +1,5 @@
 export const MovieByListSkeleton = () => {
-  const skeletonArray = Array.from({ length: 10 }); // Create an array of 10 skeleton items
+  const skeletonArray = Array.from({ length: 10 });
 
   return (
     <div className="flex flex-col w-full py-8 px-5 md:px-20 md:py-10 bg-white dark:bg-black gap-[32px]">

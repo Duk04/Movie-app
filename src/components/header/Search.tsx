@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef, RefObject } from "react";
+
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
 

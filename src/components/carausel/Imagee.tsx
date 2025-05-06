@@ -7,7 +7,7 @@ import {
   type CarouselApi,
 } from "@/components/ui/carousel";
 import { Button } from "../ui/button";
-import { Play, Star, X } from "lucide-react";
+import { Play, Star } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Trailer } from "./Trailer";
 import { CarauselSkeleton } from "./CarauselSkeleton";

@@ -6,12 +6,11 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ChevronDown, X } from "lucide-react";
 import { useState } from "react";
-import { Button } from "../ui/button";
+
 import { Badge } from "@/components/ui/badge";
 import { ChevronRight } from "lucide-react";
 import { useRouter } from "next/navigation";
