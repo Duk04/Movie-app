@@ -1,5 +1,3 @@
-import { HeaderContainer } from "@/components/header/HeaderContainer";
-import { ImageNOwPlaying } from "@/components/carausel/ImageNOwPlaying";
 import { MovieByList } from "@/components/MovieBylists/MovieByList";
 import { CaroselImage } from "@/components/carausel/Imagee";
 const Home = () => {

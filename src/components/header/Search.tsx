@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, RefObject } from "react";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
-import axios from "axios";
+
 type SearchProps = {
   handleSearchChange: (
     event: React.ChangeEvent<HTMLInputElement>

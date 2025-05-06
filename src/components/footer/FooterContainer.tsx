@@ -1,4 +1,3 @@
-import { Logo } from "../header/Logo";
 import { FooterLogo } from "./FooterLogo";
 
 import { FooterContact } from "./FooterContact";

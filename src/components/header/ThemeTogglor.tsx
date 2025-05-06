@@ -14,8 +14,8 @@ type ThemeTogglorProps = {
   setShowSearch: (value: boolean) => void;
   handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   searchValue: string;
-  searchResults: any[]; // Adjust type as needed
-  handleclick: (value: boolean) => void; // Accepts a boolean argument
+  searchResults: any[];
+  handleclick: () => void;
 };
 
 export const ThemeTogglor = ({
@@ -36,7 +36,7 @@ export const ThemeTogglor = ({
     <div className="flex gap-2">
       <div
         className=" flex md:hidden items-center justify-center size-8 rounded-[10px] border cursor-pointer"
-        onClick={() => setShowSearch(!showSearch)}
+        onClick={handleclick}
       >
         <Search className="size-4 text-gray-600 dark:text-white" />
       </div>
@@ -79,9 +79,7 @@ export const ThemeTogglor = ({
                 <Button
                   size="icon"
                   className="bg-transparent"
-                  onClick={() => {
-                    handleclick?.(false);
-                  }}
+                  onClick={handleclick}
                 >
                   <XToggler />
                 </Button>

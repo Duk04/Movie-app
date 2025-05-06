@@ -1,16 +1,33 @@
+"use client";
 import { ArrowRight, Star } from "lucide-react";
 import React from "react";
 import { Button } from "../ui/button";
 type ResultProps = {
   isLoading: boolean;
-  searchResults: never[];
+  searchResults: any[];
   searchValue: string;
+  setSearchResults: React.Dispatch<React.SetStateAction<any[]>>;
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  searchContainerRef?: React.RefObject<HTMLDivElement>;
 };
+import { useRouter } from "next/navigation";
 export const SearchResult = ({
   isLoading,
   searchResults,
   searchValue,
+  setSearchResults,
+  setIsLoading,
+  setSearchValue,
 }: ResultProps) => {
+  const router = useRouter();
+  const handeleSelect = (movie: any) => {
+    setSearchResults(searchResults.length > 0 ? [] : []);
+    setIsLoading(isLoading);
+    setSearchValue("");
+    router.push(`/movie/${movie.id}`);
+  };
+
   return (
     <div className="flex items-center justify-center">
       {isLoading && (
@@ -25,6 +42,7 @@ export const SearchResult = ({
             <div
               key={movie.id}
               className=" p-3 border-b flex border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-800 cursor-pointer justify-between"
+              onClick={() => handeleSelect(movie)}
             >
               <div className="flex gap-4 justify-between w-full">
                 <img
@@ -56,12 +74,13 @@ export const SearchResult = ({
           ))}
           <hr className="border-t border-gray-300 my-4" />
           <p className="flex px-[16px] py-[8px]">
-            Search all result for "{searchValue.toLocaleLowerCase()}"
+            Search all result for "
+            {searchValue ? searchValue.toLocaleLowerCase() : ""}"
           </p>
         </div>
       )}
 
-      {searchValue.trim() && searchResults.length === 0 && !isLoading && (
+      {searchValue.trim() && !isLoading && searchResults.length === 0 && (
         <div className="flex  md:w-[577px] items-center md:h-[128px] w-[335px] h-[128px] justify-center bg-white dark:bg-[#27272A] border border-[#E4E4E7] rounded-[8px] shadow-md p-3 text-center text-gray-500 dark:text-gray-400 absolute top-20 z-50 ">
           No results found.
         </div>

@@ -4,34 +4,21 @@ import React from "react";
 import { Star } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DynamicPagination } from "@/components/DynamicPagination";
-import { MovieByListSkeleton } from "@/components/MovieBylists/MovieByListSkeleton";
-type Movie = {
-  movieType: "upcoming" | "popular" | "top_rated";
-};
-const Search = () => {
+
+const MoreLike = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const movieType =
-    (searchParams.get("movieType") as Movie["movieType"]) || "popular";
-
-  const movieTitleMap: Record<Movie["movieType"], string> = {
-    upcoming: "Upcoming",
-    popular: "Popular",
-    top_rated: "Top Rated",
-  };
-  const movieTitle = movieTitleMap[movieType];
+  const movieType = Number(searchParams.get("movies")) || 1;
   const paramsPgae = searchParams.get("page") ?? 1;
   const { data } = useFetchDataClient(
-    `/movie/${movieType}?language=en-US&page=${paramsPgae}`
+    `/movie/${movieType}/similar?language=en-US&page=${paramsPgae}`
   );
   const movies = data?.results ?? [];
   const totalPage = data?.total_pages ?? [];
-  if (!movies) {
-    return <MovieByListSkeleton />;
-  }
+
   return (
-    <div className="flex flex-col w-full py-8 px-5 md:px-20 md:py-10 bg-white dark:bg-black gap-[32px]">
-      <h1 className="text-2xl font-bold mb-4 capitalize">{movieTitle}</h1>
+    <div className="flex flex-col w-full py-8 px-5 md:px-20 md:py-10 bg-white dark:bg-black gap-[32px] min-h-screen">
+      <h1 className="text-2xl font-bold mb-4 capitalize">More like This</h1>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-5 md:gap-8 md:m-10 ">
         {movies.map((movie: any) => (
           <div
@@ -42,7 +29,7 @@ const Search = () => {
             <img
               src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
               alt={movie.title}
-              className="object-cover"
+              className="object-cover h-[500px]"
             />
             <div className="p-4 dark:bg-[#27272A]">
               <p className="flex gap-1 items-center">
@@ -62,4 +49,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default MoreLike;

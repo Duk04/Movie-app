@@ -96,7 +96,7 @@ export const CaroselImage = () => {
               className="md:relative transition:transform 0.5s ease-in-out"
             >
               <img
-                className="w-full  md:h-[700px] md:w-full bg-cover shrink-0"
+                className="w-full  md:h-[700px] md:w-full object-cover shrink-0"
                 src={`http://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
                 alt={movie.title}
               />

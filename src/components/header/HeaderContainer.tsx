@@ -1,60 +1,75 @@
 "use client";
 import { Logo } from "./Logo";
-import { ThemeTogglor } from "./ThemeTogglor"; // Ensure ThemeTogglor accepts a function prop
+import { ThemeTogglor } from "./ThemeTogglor";
 import { Search } from "./Search";
-import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
-import { XToggler } from "./XToggler";
+import { useMovieSearch } from "@/hooks/useMovieSearch";
 import { DropDown } from "./DropDown";
 import { SearchResult } from "./SearchResult";
-import axios from "axios";
+import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 export const HeaderContainer = () => {
+  const router = useRouter();
   const [showSearch, setShowSearch] = useState(false);
-  const [searchResults, setSearchResults] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleSearchChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const value = event.target.value;
-    setSearchValue(value);
-
-    if (value.trim()) {
-      setIsLoading(true);
-      try {
-        const { data } = await axios.get(
-          `https://api.themoviedb.org/3/search/movie?query=${value}&language=en-US&page=1&api_key=${process.env.TMDB_KEY}`
-        );
-        setSearchResults(data.results);
-      } catch (error) {
-        console.error("Error fetching search results:", error);
-        setSearchResults([]);
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      setSearchResults([]);
-    }
-  };
+  const {
+    searchResults,
+    searchValue,
+    isLoading,
+    handleSearchChange,
+    setSearchResults,
+    setSearchValue,
+    setIsLoading,
+  } = useMovieSearch();
 
   const handleclick = () => {
     setShowSearch(!showSearch);
-    setSearchResults(searchResults.length > 0 ? [] : []);
-    setIsLoading(isLoading);
+    setSearchResults([]);
+    setIsLoading(false);
     setSearchValue("");
+    // router.push(`/`);
   };
+
+  const handelMainPage = () => {
+    router.push(`/`);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        searchContainerRef.current &&
+        event.target instanceof Node &&
+        !searchContainerRef.current.contains(event.target)
+      ) {
+        setSearchResults([]);
+        setIsLoading(false);
+        setSearchValue("");
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="flex flex-col p-4 w-full">
-      <div className="justify-between items-center  w-full flex">
-        <Logo />
+    <div
+      className="sticky inset-x-0 top-0 flex flex-col p-4 w-full z-20 bg-white dark:bg-black"
+      ref={searchContainerRef}
+    >
+      <div className="justify-between items-center w-full flex">
+        <Logo handelMainPage={handelMainPage} />
         <div className="hidden md:flex gap-2">
           <DropDown />
 
-          <Search
-            handleSearchChange={handleSearchChange}
-            searchValue={searchValue}
-          />
+          <div ref={searchContainerRef}>
+            <Search
+              handleSearchChange={handleSearchChange}
+              searchValue={searchValue}
+            />
+          </div>
         </div>
         <ThemeTogglor
           showSearch={showSearch}
@@ -70,6 +85,9 @@ export const HeaderContainer = () => {
           searchResults={searchResults}
           isLoading={isLoading}
           searchValue={searchValue}
+          setSearchResults={setSearchResults}
+          setSearchValue={setSearchValue}
+          setIsLoading={setIsLoading}
         />
       </div>
     </div>
