@@ -14,9 +14,9 @@ type Movie = {
   id: number;
   title: string;
   overview: string;
-  poster_path: string | null;
-  release_date: string | null;
-  runtime: number | null;
+  poster_path: string;
+  release_date: string;
+  runtime: number;
   popularity: number | null;
   vote_average: number;
   genres: { id: number; name: string }[];
