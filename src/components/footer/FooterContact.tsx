@@ -24,10 +24,13 @@ export const FooterContact = () => {
       <div className="flex flex-col gap-3">
         <p className="text-white">Follow us</p>
         <div className="flex gap-3 flex-col md:flex-row">
-          <a href="" className="text-white">
+          <a
+            href="https://www.facebook.com/ganbold.dulguun.906"
+            className="text-white"
+          >
             Facebook
           </a>
-          <a href="" className="text-white">
+          <a href="https://www.instagram.com/dukugnbld/" className="text-white">
             Instagram
           </a>
           <a href="" className="text-white">

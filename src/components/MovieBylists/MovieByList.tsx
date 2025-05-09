@@ -38,8 +38,8 @@ export const MovieByList = ({ movieType }: Movie) => {
       <div className="flex items-center justify-between shadow-none border-none md:px-10">
         <h1 className="text-[24px] font-bold">{movieTitle}</h1>
         <Button
-          className="bg-transparent text-black dark:text-white hover:text-white"
-          onClick={() => router.push(`/search?movieType=${movieType}`)}
+          className="bg-transparent text-black dark:text-white hover:text-white cursor-pointer dark:hover:bg-white dark:hover:text-black"
+          onClick={() => router.push(`/seemore?movieType=${movieType}`)}
         >
           See More <ArrowRight />
         </Button>

@@ -17,7 +17,7 @@ export const MovieDetailCredit: React.FC<MovieDetailCreditProps> = ({
         {movie.genres.map((genre: any) => (
           <Badge
             key={genre.id}
-            className="px-[10px] py-[2px] border-[#E4E4E7] bg-white dark:bg-gray-700 text-[12px] font-semibold text-black rounded-full"
+            className="px-[10px] py-[2px] border-[#E4E4E7] bg-white text-[12px] font-semibold text-black rounded-full dark:bg-black dark:text-white"
           >
             {genre.name}
           </Badge>

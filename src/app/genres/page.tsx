@@ -54,7 +54,7 @@ export const GenrePage = () => {
   return (
     <div className="px-5 md:px-20 md:py-[52px] flex flex-col md:flex-row gap-8 min-h-screen">
       <div className="flex flex-col gap-2">
-        <h1 className="font-semibold text-2xl text-black flex gap-2">
+        <h1 className="font-semibold text-2xl text-black flex gap-2 dark:text-white">
           <span className="flex md:hidden">Search by</span>
           Genre
         </h1>
@@ -68,7 +68,7 @@ export const GenrePage = () => {
                 key={id}
                 variant="outline"
                 className={cn(
-                  "bg-white text-black text-[12px] font-semibold rounded-full border-[#E4E4E7] items-center flex cursor-pointer",
+                  "bg-white text-black text-[12px] font-semibold rounded-full border-[#E4E4E7] items-center flex cursor-pointer dark:bg-black dark:text-white",
                   isSelected && "bg-black text-white"
                 )}
                 onClick={() => handleSelectedGenre(String(id))}

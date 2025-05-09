@@ -2,13 +2,13 @@
 
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 type SearchProps = {
-  handleSearchChange: (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => Promise<void>;
+  handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   searchValue: string;
 };
+
 export const Search = ({ handleSearchChange, searchValue }: SearchProps) => {
   return (
     <div className="flex flex-col gap-4 items-center">

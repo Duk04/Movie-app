@@ -19,10 +19,10 @@ type ThemeTogglorProps = {
 
 export const ThemeTogglor = ({
   showSearch,
-  setShowSearch,
+
   handleSearchChange,
   searchValue,
-  searchResults,
+
   handleclick,
 }: ThemeTogglorProps) => {
   const [useTheme, setUseTheme] = useState(false);

@@ -43,17 +43,17 @@ export const DropDown = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className="size-8 md:flex flex gap-2 py-2 px-3 border rounded-[8px] md:h-[36px] md:w-[97px] border-[#E4E4E7] items-center "
+        className="size-8 md:flex flex gap-2 py-2 px-3 border rounded-[8px] md:h-[36px] md:w-[97px] border-[#E4E4E7] items-center cursor-pointer"
         onClick={handleclick}
       >
         <ChevronDown className="size-4 text-black dark:text-white" />
         <span className="hidden md:flex text-black dark:text-white">Genre</span>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="flex flex-col w-[335px] md:w-[557px] border-[#E4E4E7] bg-white mx-5 p-5">
-        <DropdownMenuLabel className="font-semibold text-2xl text-black">
+      <DropdownMenuContent className="flex flex-col w-[335px] md:w-[557px] border-[#E4E4E7] bg-white mx-5 p-5 dark:bg-black">
+        <DropdownMenuLabel className="font-semibold text-2xl text-black dark:text-white">
           Genre
         </DropdownMenuLabel>
-        <DropdownMenuLabel className="text-[rgba(9,9,11,1)] font-normal text-base">
+        <DropdownMenuLabel className="text-[rgba(9,9,11,1)] font-normal text-base dark:text-white">
           Select a genre to filter movies
         </DropdownMenuLabel>
         <hr className="border-t border-gray-300 my-4" />
@@ -65,13 +65,13 @@ export const DropDown = () => {
                 <Badge
                   variant="outline"
                   className={cn(
-                    "bg-white text-[rgba(0,0,0,1)] text-[12px] font-semibold rounded-full border-[#E4E4E7] items-center flex-wrap flex cursor-pointer ",
+                    "bg-white text-[rgba(0,0,0,1)] text-[12px] font-semibold rounded-full border-[#E4E4E7] items-center flex-wrap flex cursor-pointer dark:bg-black",
                     isSLelected &&
                       "bg-black text-white dark:bg-white dark:text-black"
                   )}
                   onClick={() => handleGoDetail(String(id))}
                 >
-                  {name}
+                  <p className="text-black dark:text-white">{name}</p>
                   {isSLelected ? (
                     <X size={16} className="text-white" />
                   ) : (

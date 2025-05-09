@@ -1,65 +1,79 @@
 "use client";
+import { useSearchParams } from "next/navigation";
 import { useFetchDataClient } from "@/hooks/useFetchDataClient";
-import React from "react";
-import { Star } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
-import { DynamicPagination } from "@/components/DynamicPagination";
-import { MovieByListSkeleton } from "@/components/MovieBylists/MovieByListSkeleton";
-type Movie = {
-  movieType: "upcoming" | "popular" | "top_rated";
+import { useMovieSearch } from "@/hooks/useMovieSearch";
+import { useEffect, useState } from "react";
+import { SearchForOtherPagesMovie } from "./components/SearchForOtherPagesMovie";
+import { GenreBadge } from "./components/GenreBadge";
+type getType = {
+  id: number;
+  name: string;
 };
-const Search = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const movieType =
-    (searchParams.get("movieType") as Movie["movieType"]) || "popular";
+const SearchForOtherPage = () => {
+  const { searchValue, isLoading, setSearchValue } = useMovieSearch();
 
-  const movieTitleMap: Record<Movie["movieType"], string> = {
-    upcoming: "Upcoming",
-    popular: "Popular",
-    top_rated: "Top Rated",
-  };
-  const movieTitle = movieTitleMap[movieType];
-  const paramsPgae = searchParams.get("page") ?? 1;
-  const { data } = useFetchDataClient(
-    `/movie/${movieType}?language=en-US&page=${paramsPgae}`
+  const searchParams = useSearchParams();
+  const query = searchParams.get("query") || "";
+  const paramsPage = searchParams.get("page") ?? 1;
+
+  useEffect(() => {
+    if (query && query !== searchValue) {
+      setSearchValue(query);
+    }
+  }, [query, searchValue, setSearchValue]);
+
+  const { data: searchData } = useFetchDataClient(
+    `/search/movie?query=${searchValue}&page=${paramsPage}&language=en-US`
   );
-  const movies = data?.results ?? [];
-  const totalPage = data?.total_pages ?? [];
-  if (!movies) {
-    return <MovieByListSkeleton />;
-  }
+  const searchResults = searchData?.results ?? [];
+  const totalPage = searchData?.total_pages ?? [];
+
+  const { data: genreData } = useFetchDataClient(
+    "/genre/movie/list?language=en"
+  );
+  const genres: getType[] = genreData?.genres ?? [];
+
+  const [selectedGenreIds, setSelectedGenreIds] = useState<string[]>([]);
+
+  const handleSelectedGenre = (genreId: string) => {
+    setSelectedGenreIds((prev) =>
+      prev.includes(genreId)
+        ? prev.filter((id) => id !== genreId)
+        : [...prev, genreId]
+    );
+  };
+
+  const filteredResults = searchResults.filter((movie: any) =>
+    selectedGenreIds.length > 0
+      ? movie.genre_ids.some((id: number) =>
+          selectedGenreIds.includes(String(id))
+        )
+      : true
+  );
+
   return (
-    <div className="flex flex-col w-full py-8 px-5 md:px-20 md:py-10 bg-white dark:bg-black gap-[32px]">
-      <h1 className="text-2xl font-bold mb-4 capitalize">{movieTitle}</h1>
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-5 md:gap-8 md:m-10 ">
-        {movies.map((movie: any) => (
-          <div
-            key={movie.id}
-            className="shadow-md rounded-lg overflow-hidden flex flex-col gap-2 hover:opacity-75 cursor-pointer"
-            onClick={() => router.push(`/movie/${movie.id}`)}
-          >
-            <img
-              src={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
-              alt={movie.title}
-              className="object-cover"
-            />
-            <div className="p-4 dark:bg-[#27272A]">
-              <p className="flex gap-1 items-center">
-                <Star className="size-4 text-amber-300 dark:text-white fill-amber-300 dark:fill-white" />
-                {movie.vote_average.toFixed(1)}
-                <span className="text-[16px] font-normal text-gray-500">
-                  /10
-                </span>
-              </p>
-              <h3 className="text-lg font-semibold">{movie.title}</h3>
-            </div>
-          </div>
-        ))}
+    <div className="flex flex-col w-full py-8 px-5 md:px-20 md:py-10 bg-white dark:bg-black gap-[32px] min-h-screen">
+      <h1 className="text-[30px] font-semibold">Search Results</h1>
+      <p className="text-[20px] font-semibold">
+        {filteredResults.length} results for "{searchValue}"
+      </p>
+      <div className="flex flex-col md:flex-row gap-7 justify-between">
+        <SearchForOtherPagesMovie
+          searchValue={searchValue}
+          filteredResults={filteredResults}
+          isLoading={isLoading}
+          searchResults={searchResults}
+          totalPage={totalPage}
+        />
+
+        <GenreBadge
+          genres={genres}
+          handleSelectedGenre={handleSelectedGenre}
+          selectedGenreIds={selectedGenreIds}
+        />
       </div>
-      <DynamicPagination totalPage={Number(totalPage)} />
     </div>
   );
 };
 
-export default Search;
+export default SearchForOtherPage;

@@ -2,6 +2,7 @@
 import { useRouter } from "next/navigation";
 import { Star } from "lucide-react";
 import { DynamicPagination } from "@/components/DynamicPagination";
+import { GenreBYMovieListSkeleton } from "./GenreBYMovieListSkeleton";
 
 interface Movie {
   id: number;
@@ -26,11 +27,25 @@ interface GenreMovieBYListProps {
 export const GenreMovieBYList: React.FC<GenreMovieBYListProps> = ({
   movie,
   totalPage,
+  isLoading,
+  genres,
 }) => {
   const { push } = useRouter();
+  if (movie.length === 0) {
+    return (
+      <div className="font-black text-7xl">
+        <GenreBYMovieListSkeleton />
+      </div>
+    );
+  }
+  if (isLoading) {
+    return <GenreBYMovieListSkeleton />;
+  }
   return (
     <div className="">
-      <h2 className="text-2xl font-bold mb-4">Search Result:</h2>
+      <h2 className="text-2xl font-bold mb-4">
+        Search Result:{totalPage || "No genre selected"}
+      </h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-12">
         {movie.map((movie) => (
           <div

@@ -6,13 +6,14 @@ import { useMovieSearch } from "@/hooks/useMovieSearch";
 import { DropDown } from "./DropDown";
 import { SearchResult } from "./SearchResult";
 import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { SearchFor } from "@/app/search/components/SearchFor";
 
 export const HeaderContainer = () => {
   const router = useRouter();
   const [showSearch, setShowSearch] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
-
+  const pathName = usePathname();
   const {
     searchResults,
     searchValue,
@@ -64,10 +65,14 @@ export const HeaderContainer = () => {
           <DropDown />
 
           <div ref={searchContainerRef}>
-            <Search
-              handleSearchChange={handleSearchChange}
-              searchValue={searchValue}
-            />
+            {pathName === "/search" ? (
+              <SearchFor />
+            ) : (
+              <Search
+                handleSearchChange={handleSearchChange}
+                searchValue={searchValue}
+              />
+            )}
           </div>
         </div>
         <ThemeTogglor
