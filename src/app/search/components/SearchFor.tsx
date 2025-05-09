@@ -3,11 +3,11 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
+
 export const SearchFor = () => {
-  const [searchResults, setSearchResults] = useState<any[]>([]);
   const [searchValue, setSearchValue] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const { push } = useRouter();
+
   const handleSearchChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -15,20 +15,13 @@ export const SearchFor = () => {
     setSearchValue(value);
 
     if (value.trim()) {
-      setIsLoading(true);
       try {
-        const { data } = await axios.get(
+        await axios.get(
           `https://api.themoviedb.org/3/search/movie?query=${value}&language=en-US&page=1&api_key=${process.env.TMDB_KEY}`
         );
-        setSearchResults(data.results);
       } catch (error) {
         console.error("Error fetching search results:", error);
-        setSearchResults([]);
-      } finally {
-        setIsLoading(false);
       }
-    } else {
-      setSearchResults([]);
     }
     push(`/search?query=${value}`);
   };

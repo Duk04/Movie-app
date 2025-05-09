@@ -48,7 +48,7 @@ export const MoreLikeThis = ({ id }: MorelikeProps) => {
         {moreLike.slice(0, 5).map((movie) => (
           <div
             key={movie.id}
-            className="shadow-md rounded-lg overflow-hidden flex flex-col gap-2 hover:opacity-75 cursor-pointer"
+            className="shadow-md rounded-lg overflow-hidden flex flex-col gap-2 hover:opacity-75 cursor-pointer "
             onClick={() => push(`/movie/${movie.id}`)}
           >
             <img

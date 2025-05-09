@@ -1,39 +1,49 @@
 "use client";
 import { useSearchParams } from "next/navigation";
 import { useFetchDataClient } from "@/hooks/useFetchDataClient";
-import { useMovieSearch } from "@/hooks/useMovieSearch";
 import { useEffect, useState } from "react";
 import { SearchForOtherPagesMovie } from "./components/SearchForOtherPagesMovie";
 import { GenreBadge } from "./components/GenreBadge";
-type getType = {
+
+// Define a type for genres
+type Genre = {
   id: number;
   name: string;
 };
-const SearchForOtherPage = () => {
-  const { searchValue, isLoading, setSearchValue } = useMovieSearch();
 
+// Define a type for the movie object
+type Movie = {
+  id: number;
+  genre_ids: number[];
+  title: string;
+  poster_path: string | null; // Added poster_path for images
+  vote_average: number; // Added vote_average for ratings
+};
+
+const SearchForOtherPage = () => {
   const searchParams = useSearchParams();
   const query = searchParams.get("query") || "";
   const paramsPage = searchParams.get("page") ?? 1;
+
+  const [searchValue, setSearchValue] = useState<string>(query);
+  const [selectedGenreIds, setSelectedGenreIds] = useState<string[]>([]);
 
   useEffect(() => {
     if (query && query !== searchValue) {
       setSearchValue(query);
     }
-  }, [query, searchValue, setSearchValue]);
+  }, [query, searchValue]);
 
-  const { data: searchData } = useFetchDataClient(
+  const { data: searchData, isLoading } = useFetchDataClient(
     `/search/movie?query=${searchValue}&page=${paramsPage}&language=en-US`
   );
-  const searchResults = searchData?.results ?? [];
-  const totalPage = searchData?.total_pages ?? [];
+  const searchResults: Movie[] = searchData?.results ?? [];
+  const totalPage: number = searchData?.total_pages ?? 0;
 
   const { data: genreData } = useFetchDataClient(
     "/genre/movie/list?language=en"
   );
-  const genres: getType[] = genreData?.genres ?? [];
-
-  const [selectedGenreIds, setSelectedGenreIds] = useState<string[]>([]);
+  const genres: Genre[] = genreData?.genres ?? [];
 
   const handleSelectedGenre = (genreId: string) => {
     setSelectedGenreIds((prev) =>
@@ -43,11 +53,9 @@ const SearchForOtherPage = () => {
     );
   };
 
-  const filteredResults = searchResults.filter((movie: any) =>
+  const filteredResults = searchResults.filter((movie: Movie) =>
     selectedGenreIds.length > 0
-      ? movie.genre_ids.some((id: number) =>
-          selectedGenreIds.includes(String(id))
-        )
+      ? movie.genre_ids.some((id) => selectedGenreIds.includes(String(id)))
       : true
   );
 
@@ -55,14 +63,13 @@ const SearchForOtherPage = () => {
     <div className="flex flex-col w-full py-8 px-5 md:px-20 md:py-10 bg-white dark:bg-black gap-[32px] min-h-screen">
       <h1 className="text-[30px] font-semibold">Search Results</h1>
       <p className="text-[20px] font-semibold">
-        {filteredResults.length} results for "{searchValue}"
+        {filteredResults.length} results for &quot;{searchValue}&quot;
       </p>
       <div className="flex flex-col md:flex-row gap-7 justify-between">
         <SearchForOtherPagesMovie
           searchValue={searchValue}
           filteredResults={filteredResults}
           isLoading={isLoading}
-          searchResults={searchResults}
           totalPage={totalPage}
         />
 

@@ -1,20 +1,36 @@
 import { Star } from "lucide-react";
-type MovieDetailHeaderProps = {
-  movie: any;
+
+type Movie = {
+  title: string;
+  runtime: number | null;
+  release_date: string | null;
+  popularity: number | null;
+  vote_average: number;
 };
+
+type MovieDetailHeaderProps = {
+  movie: Movie;
+};
+
 export const MovieDetailHeader: React.FC<MovieDetailHeaderProps> = ({
   movie,
 }) => {
-  const movieRuntimeHour = Math.floor(movie.runtime / 60);
-  const movieRuntimeMinute = movie.runtime % 60;
+  // Calculate runtime in hours and minutes
+  const movieRuntimeHour = movie.runtime ? Math.floor(movie.runtime / 60) : 0;
+  const movieRuntimeMinute = movie.runtime ? movie.runtime % 60 : 0;
 
-  const releaseDate = movie.release_date.replace(/-/g, ".");
+  // Format release date
+  const releaseDate = movie.release_date
+    ? movie.release_date.replace(/-/g, ".")
+    : "Unknown";
 
-  const watched = Math.floor(movie.popularity);
+  // Calculate popularity in thousands
+  const watched = movie.popularity ? Math.floor(movie.popularity) : 0;
+
   return (
     <div className="flex py-3">
       <div className="w-full px-5 flex justify-between">
-        <div className="">
+        <div>
           <h1 className="text-[36px] font-bold">{movie.title}</h1>
           <div className="flex gap-1 text-[18px]">
             <p>{releaseDate}</p>·<p>{movieRuntimeHour}h</p>

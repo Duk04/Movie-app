@@ -12,21 +12,12 @@ import { useEffect, useState } from "react";
 import { Trailer } from "./Trailer";
 import { CarauselSkeleton } from "./CarauselSkeleton";
 
-type getType = {
-  adult: boolean;
-  backdrop_path: string;
-  genre_ids: number;
+type Movie = {
   id: number;
-  original_language: string;
-  original_title: string;
-  overview: string;
-  popularity: number;
-  poster_path: string;
-  release_date: string;
+  backdrop_path: string | null;
   title: string;
-  video: boolean;
+  overview: string;
   vote_average: number;
-  vote_count: number;
 };
 
 type VideoType = {
@@ -38,12 +29,12 @@ type VideoType = {
 export const CaroselImage = () => {
   const [api, setApi] = useState<CarouselApi | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [next, setNext] = useState(true);
   const [trailerKey, setTrailerKey] = useState<string | null>(null);
+
   const { data } = useFetchDataClient(
     "/movie/now_playing?language=en-US&page=1"
   );
-  const nowPlaying: getType[] = data?.results ?? [];
+  const nowPlaying: Movie[] = data?.results ?? [];
 
   useEffect(() => {
     if (!api) return;
@@ -55,34 +46,37 @@ export const CaroselImage = () => {
     onSelect();
 
     const interval = setInterval(() => {
-      setNext(false);
       api.scrollNext();
-      setNext(true);
     }, 3000);
+
     return () => {
       api.off("select", onSelect);
       clearInterval(interval);
     };
   }, [api]);
+
   if (nowPlaying.length === 0) {
-    return (
-      <div>
-        <CarauselSkeleton />
-      </div>
-    );
+    return <CarauselSkeleton />;
   }
+
   const fetchTrailer = async (movieId: number) => {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US&api_key=${process.env.TMDB_KEY}`
-    );
-    const data = await response.json();
-    const trailer = data.results?.find(
-      (video: VideoType) => video.type === "Trailer" && video.site === "YouTube"
-    );
-    if (trailer) {
-      setTrailerKey(trailer.key);
-    } else {
-      alert("Trailer not available");
+    try {
+      const response = await fetch(
+        `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US&api_key=${process.env.TMDB_KEY}`
+      );
+      const data = await response.json();
+      const trailer = data.results?.find(
+        (video: VideoType) =>
+          video.type === "Trailer" && video.site === "YouTube"
+      );
+      if (trailer) {
+        setTrailerKey(trailer.key);
+      } else {
+        alert("Trailer not available");
+      }
+    } catch (error) {
+      console.error("Error fetching trailer:", error);
+      alert("Failed to fetch trailer. Please try again later.");
     }
   };
 
@@ -90,21 +84,27 @@ export const CaroselImage = () => {
     <div className="relative">
       <Carousel setApi={setApi} opts={{ loop: true }}>
         <CarouselContent>
-          {nowPlaying.map((movie: getType) => (
+          {nowPlaying.map((movie) => (
             <CarouselItem
               key={movie.id}
-              className="md:relative transition:transform 0.5s ease-in-out"
+              className="md:relative transition-transform duration-500 ease-in-out"
             >
-              <img
-                className="w-full  md:h-[700px] md:w-full object-cover shrink-0"
-                src={`http://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
-                alt={movie.title}
-              />
-              <div className="md:h-100 md:text-white  md:absolute flex flex-col md:top-[160px] md:left-35 px-5 py-1 gap-4">
+              {movie.backdrop_path ? (
+                <img
+                  className="w-full md:h-[700px] md:w-full object-cover"
+                  src={`http://image.tmdb.org/t/p/original/${movie.backdrop_path}`}
+                  alt={movie.title}
+                />
+              ) : (
+                <div className="w-full md:h-[700px] bg-gray-300 flex items-center justify-center">
+                  <p className="text-gray-500">No Image Available</p>
+                </div>
+              )}
+              <div className="md:h-100 md:text-white md:absolute flex flex-col md:top-[160px] md:left-35 px-5 py-1 gap-4">
                 <div>
-                  <h1 className="text: md:text-xl">Now Playing:</h1>{" "}
-                  <h1 className="text-3xl md:text-6xl ">{movie.title}</h1>
-                  <h1 className="flex gap-2  md:text-xl md:pt-4">
+                  <h1 className="text-md md:text-xl">Now Playing:</h1>
+                  <h1 className="text-3xl md:text-6xl">{movie.title}</h1>
+                  <h1 className="flex gap-2 md:text-xl md:pt-4">
                     <Star className="text-amber-300 fill-amber-300 dark:text-white dark:fill-white" />
                     {movie.vote_average.toFixed(1)} /10
                   </h1>
@@ -112,11 +112,11 @@ export const CaroselImage = () => {
                 <h6 className="md:w-[500px]">{movie.overview}</h6>
                 <Button
                   variant="outline"
-                  className=" w-[145px] md:w-36 h-10 text-4 rounded-md bg-black text-white md:bg-white  md:text-black hover:opacity-70 dark:bg-white dark:text-black"
+                  className="w-[145px] md:w-36 h-10 text-4 rounded-md bg-black text-white md:bg-white md:text-black hover:opacity-70 dark:bg-white dark:text-black"
                   onClick={() => fetchTrailer(movie.id)}
                 >
                   <Play />
-                  Watch trailer
+                  Watch Trailer
                 </Button>
               </div>
             </CarouselItem>
@@ -133,7 +133,7 @@ export const CaroselImage = () => {
             }}
             className={`w-1 h-1 md:w-2 md:h-2 rounded-full transition-all duration-300 ${
               index === selectedIndex
-                ? "bg-white scale-155 shadow-lg "
+                ? "bg-white scale-155 shadow-lg"
                 : "bg-gray-500 opacity-60"
             }`}
           ></button>

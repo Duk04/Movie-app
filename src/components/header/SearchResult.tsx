@@ -4,11 +4,21 @@ import React from "react";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 
+// Define a type for the movie object
+type Movie = {
+  id: number;
+  poster_path: string | null; // Handle cases where poster_path might be null
+  title: string;
+  vote_average: number;
+  release_date: string;
+};
+
+// Define props for the component
 type ResultProps = {
   isLoading: boolean;
-  searchResults: any[];
+  searchResults: Movie[]; // Replace `any[]` with `Movie[]`
   searchValue: string;
-  setSearchResults: React.Dispatch<React.SetStateAction<any[]>>;
+  setSearchResults: React.Dispatch<React.SetStateAction<Movie[]>>;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setSearchValue: React.Dispatch<React.SetStateAction<string>>;
 };
@@ -27,7 +37,7 @@ export const SearchResult = ({
     movie.title.toLowerCase().includes(searchValue.toLowerCase())
   );
 
-  const handleSelect = (movie: any) => {
+  const handleSelect = (movie: Movie) => {
     setSearchResults([]);
     setIsLoading(false);
     setSearchValue("");
@@ -55,11 +65,17 @@ export const SearchResult = ({
               onClick={() => handleSelect(movie)}
             >
               <div className="flex gap-4 justify-between w-full">
-                <img
-                  src={`http://image.tmdb.org/t/p/original/${movie.poster_path}`}
-                  alt={movie.title}
-                  className="h-25 w-[67px] rounded-[8px]"
-                />
+                {movie.poster_path ? (
+                  <img
+                    src={`http://image.tmdb.org/t/p/original/${movie.poster_path}`}
+                    alt={movie.title}
+                    className="h-25 w-[67px] rounded-[8px]"
+                  />
+                ) : (
+                  <div className="h-25 w-[67px] bg-gray-300 flex items-center justify-center rounded-[8px]">
+                    <p className="text-gray-500">No Image</p>
+                  </div>
+                )}
                 <div className="flex flex-col gap-3 w-full">
                   <div className="flex flex-col">
                     <h3 className="text-[20px] font-medium text-gray-900 dark:text-white">
@@ -87,7 +103,7 @@ export const SearchResult = ({
             className="flex px-[16px] py-[8px] cursor-pointer"
             onClick={handleSearchAll}
           >
-            Search all results for "{searchValue.toLocaleLowerCase()}"
+            Search all results for &quot;{searchValue.toLocaleLowerCase()}&quot;
           </div>
         </div>
       )}

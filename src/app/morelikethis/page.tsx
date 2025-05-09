@@ -5,6 +5,12 @@ import { Star } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { DynamicPagination } from "@/components/DynamicPagination";
 
+type movieType = {
+  id: number;
+  poster_path: string;
+  title: string;
+  vote_average: number;
+};
 const MoreLike = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -13,14 +19,14 @@ const MoreLike = () => {
   const { data } = useFetchDataClient(
     `/movie/${movieType}/similar?language=en-US&page=${paramsPgae}`
   );
-  const movies = data?.results ?? [];
+  const movies: movieType[] = data?.results ?? [];
   const totalPage = data?.total_pages ?? [];
 
   return (
     <div className="flex flex-col w-full py-8 px-5 md:px-20 md:py-10 bg-white dark:bg-black gap-[32px] min-h-screen">
       <h1 className="text-2xl font-bold mb-4 capitalize">More like This</h1>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-5 md:gap-8 md:m-10 ">
-        {movies.map((movie: any) => (
+        {movies.map((movie) => (
           <div
             key={movie.id}
             className="shadow-md rounded-lg overflow-hidden flex flex-col gap-2 hover:opacity-75 cursor-pointer"

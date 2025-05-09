@@ -4,6 +4,7 @@ import "./globals.css";
 import { HeaderContainer } from "@/components/header/HeaderContainer";
 import { ThemeProvider } from "next-themes";
 import { FooterContainer } from "@/components/footer/FooterContainer";
+import { Suspense } from "react";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -29,11 +30,13 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeProvider>
-          <HeaderContainer />
-          {children}
-          <FooterContainer />
-        </ThemeProvider>
+        <Suspense>
+          <ThemeProvider>
+            <HeaderContainer />
+            {children}
+            <FooterContainer />
+          </ThemeProvider>
+        </Suspense>
       </body>
     </html>
   );

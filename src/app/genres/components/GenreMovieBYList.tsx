@@ -18,7 +18,7 @@ interface GenreType {
 
 interface GenreMovieBYListProps {
   movie: Movie[];
-  isLoading: Boolean;
+  isLoading: boolean;
   searchValue: string;
   genres: GenreType[];
   totalPage: number;
@@ -28,7 +28,6 @@ export const GenreMovieBYList: React.FC<GenreMovieBYListProps> = ({
   movie,
   totalPage,
   isLoading,
-  genres,
 }) => {
   const { push } = useRouter();
   if (movie.length === 0) {

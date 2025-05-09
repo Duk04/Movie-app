@@ -2,7 +2,6 @@
 
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 type SearchProps = {
   handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;

@@ -22,9 +22,7 @@ type GenreType = {
 };
 
 export const DropDown = () => {
-  const { data, isLoading } = useFetchDataClient(
-    "/genre/movie/list?language=en"
-  );
+  const { data } = useFetchDataClient("/genre/movie/list?language=en");
   const { selectedGenreIds, generateQueryParams } = useSearchGenreParams();
   const { push } = useRouter();
 

@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Moon, Search, Sun } from "lucide-react";
@@ -8,39 +9,50 @@ import { DropDown } from "./DropDown";
 import { searchBar } from "@/constants/serachBaranimation";
 import { serachBaranimation } from "@/constants/serachBaranimation";
 
+// Define a type for the search result object
+type SearchResult = {
+  id: number;
+  title: string;
+  poster_path: string | null; // Handle cases where poster_path might be null
+};
+
+// Define props for the component
 type ThemeTogglorProps = {
   showSearch: boolean;
   setShowSearch: (value: boolean) => void;
   handleSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   searchValue: string;
-  searchResults: any[];
+  searchResults: SearchResult[]; // Replace `any[]` with `SearchResult[]`
   handleclick: () => void;
 };
 
 export const ThemeTogglor = ({
   showSearch,
-
   handleSearchChange,
   searchValue,
-
   handleclick,
 }: ThemeTogglorProps) => {
   const [useTheme, setUseTheme] = useState(false);
+
   const handleThemeToggle = () => {
     setUseTheme(!useTheme);
     document.documentElement.classList.toggle("dark");
     document.documentElement.classList.toggle("light");
   };
+
   return (
     <div className="flex gap-2">
+      {/* Search Icon for Mobile */}
       <div
-        className=" flex md:hidden items-center justify-center size-8 rounded-[10px] border cursor-pointer"
+        className="flex md:hidden items-center justify-center size-8 rounded-[10px] border cursor-pointer"
         onClick={handleclick}
       >
         <Search className="size-4 text-gray-600 dark:text-white" />
       </div>
+
+      {/* Theme Toggle Button */}
       <div
-        className=" flex items-center justify-center size-8 rounded-[10px] border cursor-pointer"
+        className="flex items-center justify-center size-8 rounded-[10px] border cursor-pointer"
         onClick={handleThemeToggle}
       >
         {useTheme ? (
@@ -50,6 +62,7 @@ export const ThemeTogglor = ({
         )}
       </div>
 
+      {/* Search Bar */}
       {showSearch && (
         <AnimatePresence>
           <motion.div
