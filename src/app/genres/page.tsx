@@ -29,7 +29,7 @@ type MovieData = {
   vote_count: number;
 };
 
-export const GenrePage = () => {
+const GenrePage = () => {
   const { searchValue } = useMovieSearch();
   const router = useRouter();
   const { selectedGenreIds, generateQueryParams } = useSearchGenreParams();
