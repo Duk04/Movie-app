@@ -14,6 +14,7 @@ export const HeaderContainer = () => {
   const [showSearch, setShowSearch] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
   const pathName = usePathname();
+
   const {
     searchResults,
     searchValue,
@@ -24,14 +25,14 @@ export const HeaderContainer = () => {
     setIsLoading,
   } = useMovieSearch();
 
-  const handleclick = () => {
+  const handleClick = () => {
     setShowSearch(!showSearch);
     setSearchResults([]);
     setIsLoading(false);
     setSearchValue("");
   };
 
-  const handelMainPage = () => {
+  const handleMainPage = () => {
     router.push(`/`);
   };
 
@@ -52,7 +53,7 @@ export const HeaderContainer = () => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [setSearchResults, setIsLoading, setSearchValue]);
 
   return (
     <div
@@ -60,11 +61,10 @@ export const HeaderContainer = () => {
       ref={searchContainerRef}
     >
       <div className="justify-between items-center w-full flex">
-        <Logo handelMainPage={handelMainPage} />
+        <Logo handelMainPage={handleMainPage} />
         <div className="hidden md:flex gap-2">
           <DropDown />
-
-          <div ref={searchContainerRef}>
+          <div>
             {pathName === "/search" ? (
               <SearchFor />
             ) : (
@@ -78,7 +78,7 @@ export const HeaderContainer = () => {
         <ThemeTogglor
           showSearch={showSearch}
           setShowSearch={setShowSearch}
-          handleclick={handleclick}
+          handleclick={handleClick}
           handleSearchChange={handleSearchChange}
           searchValue={searchValue}
           searchResults={searchResults}

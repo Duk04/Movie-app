@@ -7,10 +7,11 @@ import { useRouter } from "next/navigation";
 // Define a type for the movie object
 type Movie = {
   id: number;
-  poster_path: string | null; // Handle cases where poster_path might be null
   title: string;
+  poster_path: string | null; // Handle cases where poster_path might be null
+  release_date: string | null; // Handle cases where release_date might be null
   vote_average: number;
-  release_date: string;
+  overview: string;
 };
 
 // Define props for the component
@@ -88,7 +89,9 @@ export const SearchResult = ({
                   </div>
                   <div className="flex justify-between">
                     <p className="text-[14px]">
-                      {movie.release_date.slice(0, 4)}
+                      {movie.release_date
+                        ? movie.release_date.slice(0, 4)
+                        : "N/A"}
                     </p>
                     <Button className="h-[36px] bg-transparent border-none shadow-transparent text-black">
                       See more <ArrowRight />

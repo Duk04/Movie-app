@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 import { useState } from "react";
 import { Trailer } from "@/components/carausel/Trailer";
-import { Badge } from "@/components/ui/badge";
 
 // Define a type for the video object
 type VideoType = {
