@@ -85,14 +85,18 @@ export const HeaderContainer = () => {
         />
       </div>
       <div className="px-5">
-        <SearchResult
-          searchResults={searchResults}
-          isLoading={isLoading}
-          searchValue={searchValue}
-          setSearchResults={setSearchResults}
-          setSearchValue={setSearchValue}
-          setIsLoading={setIsLoading}
-        />
+        {pathName === "/search" ? (
+          ""
+        ) : (
+          <SearchResult
+            searchResults={searchResults}
+            isLoading={isLoading}
+            searchValue={searchValue}
+            setSearchResults={setSearchResults}
+            setSearchValue={setSearchValue}
+            setIsLoading={setIsLoading}
+          />
+        )}
       </div>
     </div>
   );

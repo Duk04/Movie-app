@@ -5,19 +5,17 @@ import { useEffect, useState } from "react";
 import { SearchForOtherPagesMovie } from "./components/SearchForOtherPagesMovie";
 import { GenreBadge } from "./components/GenreBadge";
 
-// Define a type for genres
 type Genre = {
   id: number;
   name: string;
 };
 
-// Define a type for the movie object
 type Movie = {
   id: number;
   genre_ids: number[];
   title: string;
-  poster_path: string | null; // Added poster_path for images
-  vote_average: number; // Added vote_average for ratings
+  poster_path: string | null;
+  vote_average: number;
 };
 
 const SearchForOtherPage = () => {

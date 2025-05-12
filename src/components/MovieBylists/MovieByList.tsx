@@ -3,6 +3,7 @@ import { useFetchDataClient } from "@/hooks/useFetchDataClient";
 import { Star } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { MovieByListSkeleton } from "@/components/MovieBylists/MovieByListSkeleton";
+import { Button } from "@/components/ui/button";
 
 type Movie = {
   id: number;
@@ -36,7 +37,15 @@ export const MovieByList = ({ movieType }: MovieByListProps) => {
 
   return (
     <div className="flex flex-col w-full py-8 px-5 md:px-20 md:py-10 bg-white dark:bg-black gap-[32px]">
-      <h1 className="text-2xl font-bold mb-4 capitalize">{movieTitle}</h1>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold mb-4 capitalize">{movieTitle}</h1>
+        <Button
+          className="bg-transparent text-black dark:text-white hover:text-white cursor-pointer dark:hover:bg-white dark:hover:text-black"
+          onClick={() => router.push(`/seemore?movieType=${movieType}`)}
+        >
+          See More
+        </Button>
+      </div>
       <div className="grid grid-cols-2 md:grid-cols-5 gap-5 md:gap-8 md:m-10">
         {movies.map((movie) => (
           <div
